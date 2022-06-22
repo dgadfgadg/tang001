@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="text" placeholder="用户名"> <br>
+  <input type="password" placeholder="密码"> <br>
+  <input type="password" placeholder="再次输入密码"> <br>
+  <button>注册</button>
+
+  <script>
+    // 当我们点击注册的时候 如果非空 需要把用户名和密码放到本地存储中
+    var inputs = document.querySelectorAll('input');
+    var btn = document.querySelector('button');
+    // console.log(inputs[0]);
+    var arr = [];
+    // 1. 给注册按钮绑定点击事件
+    btn.addEventListener('click', function () {
+      // 只要有一个是空的都不行
+      // 2.判断非空
+      if (inputs[0].value.trim().length == 0 || inputs[1].value.trim().length == 0 || inputs[2].value.trim().length == 0) {
+        alert("用户名或密码为空");
+        return; // 如果只要有一个是空 就不继续执行后面的内容
+      }
+      // 3.判断密码和再次输入密码是否一致
+      if (inputs[1].value != inputs[2].value) {
+        alert("两次输入的密码不一致,请重新输入");
+        inputs[1].value = ""
+        inputs[2].value = ""
+        return; // 如果只要有一个是空 就不继续执行后面的内容
+      }
+      // 4.需要把数据放到本地存储中
+      // localStorage.setItem("userName", inputs[0].value)
+      // localStorage.setItem("password", inputs[1].value)
+
+      // 6.点击注册之后应该判断用户名是否已经存在  如果存在了 提示用户该用户已被注册
+      // 6.1先获取本地存储的数据
+      var result = localStorage.getItem("userInfo")
+      console.log(result);
+      // 如果本地存储已经有数据了 才需要解析数据
+      if (result) {
+        // 6.2字符串的数据 需要转换为数组
+        result = JSON.parse(result);
+        console.log(result);
+        // 6.3遍历数组 
+        for (var item of result) {
+          // 6.4 判断用户名是否存在 如果有该用户名 就提示用户  终止程序
+          if (item['userName'] == inputs[0].value) {
+            alert('此用户名已被注册');
+            return; // 表示终止这个函数
+          }
+        }
+        arr = result;
+        // 6.4 如果if一次都没有成立 表示这是新用户 ,可以注册   拿到获取到的userInfo的信息 可以进行push操作了
+      } else {
+        arr = []
+      }
+
+      // 用户可能有多个 为了更好的管理用户的数据 需要把它放到一个数组中
+      arr.push({ userName: inputs[0].value, password: inputs[1].value });
+      // console.log(arr);
+
+      // 5.数组需要转换为 字符串
+      localStorage.setItem('userInfo', JSON.stringify(arr));
+
+      // 7.注册完成之后 就需要跳转到  登录.html里面去了
+      location.href = "./登录.html"
+    })
+
+
+  </script>
+</body>
+
+</html>

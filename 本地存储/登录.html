@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="text" placeholder="用户名"> <br>
+  <input type="password" placeholder="密码"> <br>
+  <button>登录</button>
+
+  <script>
+    var user = document.querySelector('input[type=text]');
+    var pwd = document.querySelector('input[type=password]');
+    var btn = document.querySelector('button');
+    var arr;
+    btn.addEventListener('click', function () {
+      // 1.判断非空
+      if (user.value && pwd.value) {
+        // 2.进行判断输入的用户名和密码是否正确
+        // 2.1 获取到本地存储的数据
+        var result = localStorage.getItem("userInfo")
+        console.log(result);
+        arr = JSON.parse(result);
+        console.log(arr);
+        for (var item of arr) {
+          console.log(item);
+          if (item.userName == user.value && item.password == pwd.value) {
+            alert('登录成功');
+            localStorage.setItem('name', user.value);
+            location.href = "./index1.html"
+            return;
+          }
+        }
+        alert("用户名或密码错误")
+      } else {
+        alert("请输入用户名或者密码");
+      }
+    })
+
+
+  </script>
+</body>
+
+</html>
